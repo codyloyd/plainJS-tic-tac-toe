@@ -18,6 +18,10 @@
       height: 20rem;
       grid-gap: .5rem;
       background: black;
+      opacity: 0;
+    }
+    .gameboard.visible {
+      opacity: 1;
     }
     .grid {
       display: flex;
@@ -38,6 +42,15 @@
     <div class="grid"></div>
     <div class="grid"></div>
   </div>  
+
+  <div class="game-start-dialog">
+    <h1>let's play tic tac toe</h1>
+    <form action="start-game" id="start-game">
+      <input type="text" name="player1" placeholder="player one name">
+      <input type="text" name="player2" placeholder="player two name">
+    <button>BEGIN</button>
+    </form>
+  </div>
 </body>
 <script src="./script.js"> </script>
 </html>

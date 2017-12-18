@@ -23,6 +23,12 @@ const gameFactory = (name1, name2) => {
   function drawBoard(gameArray) {
     gridSquares.forEach((x, i) => (x.innerHTML = gameArray[i]));
   }
+
+  function showGameboard() {
+    const gameboardDiv = document.querySelector(".gameboard");
+    gameboardDiv.classList.add("visible");
+  }
+
   function renderGameOver(winner) {
     const gameOverModal = document.createElement("div");
     gameOverModal.id = "game-over-modal";
@@ -61,27 +67,31 @@ const gameFactory = (name1, name2) => {
     );
   }
 
+  let currentPlayer = player1;
+  function takeOneTurn(s, i) {
+    if (currentPlayer.makeMove(i, gameArray)) {
+      currentPlayer = currentPlayer == player1 ? player2 : player1;
+      drawBoard(gameArray);
+      gameOver = checkGameOver(gameArray);
+      if (gameOver.win) {
+        const winnerMarker = gameOver.winner;
+        let winner = "tie";
+        if (winnerMarker == "x") {
+          winner = player1;
+        } else if (winnerMarker == "o") {
+          winner = player2;
+        }
+        renderGameOver(winner);
+      }
+    }
+  }
+
   function play() {
-    let currentPlayer = player1;
+    showGameboard();
+    drawBoard(gameArray);
 
     gridSquares.forEach((s, i) => {
-      s.addEventListener("click", () => {
-        if (currentPlayer.makeMove(i, gameArray)) {
-          currentPlayer = currentPlayer == player1 ? player2 : player1;
-          drawBoard(gameArray);
-          gameOver = checkGameOver(gameArray);
-          if (gameOver.win) {
-            const winnerMarker = gameOver.winner;
-            let winner = "tie";
-            if (winnerMarker == "x") {
-              winner = player1;
-            } else if (winnerMarker == "o") {
-              winner = player2;
-            }
-            renderGameOver(winner);
-          }
-        }
-      });
+      s.onclick = () => takeOneTurn(s, i);
     });
   }
   return {
@@ -89,5 +99,10 @@ const gameFactory = (name1, name2) => {
   };
 };
 
-let game = gameFactory("chris", "steve");
-game.play();
+const startGameForm = document.querySelector("#start-game");
+startGameForm.onsubmit = function(e) {
+  e.preventDefault();
+  let game;
+  game = gameFactory(startGameForm.player1.value, startGameForm.player2.value);
+  game.play();
+};
