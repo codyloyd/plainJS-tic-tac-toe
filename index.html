@@ -6,16 +6,25 @@
 </head>
 <body>
   <style>
+    :root {
+      font-size: 24px;
+      font-family: Sans-serif;
+    }
     .gameboard {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
-      border: black 2px solid;
-      width: 300px;
-      height: 300px;
+      width: 20rem;
+      height: 20rem;
+      grid-gap: .5rem;
+      background: black;
     }
     .grid {
-      border: black 1px solid;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      background: white;
     }
   </style>
   <div class="gameboard">
@@ -30,33 +39,5 @@
     <div class="grid"></div>
   </div>  
 </body>
-<script>
-  const playerFactory = (name, symbol) => {
-    const makeMove = (move, array) => {
-      array[move] = symbol
-      return array
-    }
-    return {
-      name,
-      symbol,
-      makeMove
-    }
-  }
-
-  const gameFactory = (name1, name2) => {
-    let gameArray = ['','','','','','','','','']
-    let player1 = playerFactory(name1, 'x')
-    let player2 = playerFactory(name2, 'o')
-    const drawBoard = () => 
-      document.querySelectorAll('.grid').forEach((x,i) => x.innerHTML = gameArray[i] )
-    return {
-      gameArray,
-      player1,
-      player2,
-      drawBoard
-    } 
-  }
-
-  let game = gameFactory('chris', 'steve')
-</script>
+<script src="./script.js"> </script>
 </html>
