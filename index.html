@@ -3,34 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <title>tictactoes</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
 </head>
 <body>
   <style>
     :root {
+      --font-family: 'Roboto Slab', Sans-serif;
+      --box-shadow: 3px 3px 18px 0 rgba(0,0,0,.15);
+      --theme-color: #6369D1;
+      box-sizing: border-box;
+      font-family: var(--font-family);
       font-size: 24px;
-      font-family: Sans-serif;
+    }
+    html {
+      background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d1d3f1' fill-opacity='0.91'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E"), linear-gradient(135deg, #ffffff 0%,#d1d3f1 100%) ;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1, h2 {
+      margin: .5rem 0;
+    }
+    button {
+      font-family: var(--font-family);
+      font-size: 1rem;
+      padding: .25rem 1rem;
+      background: var(--theme-color);
+      color: white;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
     }
     .gameboard {
+      border-radius: 4px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
       width: 20rem;
-      height: 20rem;
+      height: 24rem;
       grid-gap: .5rem;
       background: black;
       opacity: 0;
+      box-shadow: var(--box-shadow);
+      border: 2rem white solid;
+      border-bottom: 0;
+      margin: 2rem auto;
+      pointer-events: none;
     }
     .gameboard.visible {
       opacity: 1;
+      pointer-events: auto;
     }
     .grid {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 3rem;
+      font-size: 4rem;
       background: white;
     }
+    .game-over-modal, .game-start-dialog {
+      position: absolute;
+      border-radius: 4px;
+      background: white;
+      box-shadow: var(--box-shadow);
+      padding: .5rem .5rem 1rem;
+      width: 20rem;
+      top: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      transition: all .3s cubic-bezier(0.72, -0.54, 1, 1.1);
+    }
+    .game-over-modal {
+      transform: translate(-50%, -500px);
+      transition: all .3s cubic-bezier(0.08, 0.04, 0, 1.36);
+      opacity: 0;
+    }
+    .game-over-modal.visible {
+      transform: translateX(-50%);
+      opacity: 1;
+    }
+    form {
+      text-align: center;
+    }
+    input {
+      font-family: var(--font-family);
+      font-size: .75rem;
+      padding: .25rem 0;
+      text-align: center;
+      border: none;
+      border-bottom: 1px solid var(--theme-color);
+      margin: .5rem 0 1rem;
+    }
+    #current-player {
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -.5rem;
+      background: white;
+      grid-column: 1/4;
+      text-align: center;
+    }
   </style>
+  <div class="game-start-dialog">
+    <h1>let's play tic tac toe</h1>
+    <form action="start-game" id="start-game">
+      <input type="text" name="player1" placeholder="player one name">
+      <input type="text" name="player2" placeholder="player two name">
+      <button>Let's go!</button>
+    </form>
+  </div>
+  
+  <div class="game-over-modal">
+    <h1>Game over</h1>
+    <h2 id="message"></h2>
+    <button>Play again?</button>
+  </div>
+
   <div class="gameboard">
     <div class="grid"></div>
     <div class="grid"></div>
@@ -41,16 +130,9 @@
     <div class="grid"></div>
     <div class="grid"></div>
     <div class="grid"></div>
+    <div id="current-player"></div>
   </div>  
 
-  <div class="game-start-dialog">
-    <h1>let's play tic tac toe</h1>
-    <form action="start-game" id="start-game">
-      <input type="text" name="player1" placeholder="player one name">
-      <input type="text" name="player2" placeholder="player two name">
-    <button>BEGIN</button>
-    </form>
-  </div>
 </body>
 <script src="./script.js"> </script>
 </html>
